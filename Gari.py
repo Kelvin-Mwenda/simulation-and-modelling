@@ -185,7 +185,7 @@ class VehicleVisualization:
         height = dimensions["height"]
 
         # Scale dimensions for display
-        scale = 1.5
+        scale = 1.05
         length = length / scale
         width = width / scale
         height = height / scale
@@ -310,7 +310,7 @@ class VehicleVisualization:
         bed_length = dimensions["bed_length"]
 
         # Scale dimensions for display
-        scale = 1.5
+        scale = 1.05
         length = length / scale
         width = width / scale
         height = height / scale
@@ -342,7 +342,7 @@ class VehicleVisualization:
             x1 + front_length * 0.9,
             y1,  # Roof end
             x1 + front_length,
-            y1 + height * 0.1,  # Back of cab
+            y1 + height * 0.4,  # Back of cab
             x1 + front_length,
             body_bottom,  # Back ground (raised)
             x1,
@@ -445,6 +445,89 @@ class VehicleVisualization:
             y1 + height * 0.4,
             x2,
             y1 + height * 0.5,
+            fill="red",
+            outline="black",
+        )
+
+    def draw_suv(self, x, y, dimensions, color):
+        """Draw a realistic SUV representation raised above the ground"""
+        length = dimensions["length"]
+        width = dimensions["width"]
+        height = dimensions["height"]
+
+        # Scale dimensions for display
+        scale = 1.2
+        length = length / scale
+        width = width / scale
+        height = height / scale
+
+        # Raise the entire SUV above the ground
+        ground_offset = 50  # Distance from the ground to the bottom of the wheels
+
+        # Base coordinates
+        x1 = x - length / 2
+        x2 = x + length / 2
+        y1 = y - height - ground_offset  # Top of the SUV body
+        y2 = y - ground_offset  # Bottom of the SUV body
+
+        # SUV body (main rectangle)
+        self.canvas.create_rectangle(x1, y1, x2, y2, fill=color, outline="black")
+
+        # Windows (above the body)
+        window_color = "#a8d6ff"
+        self.canvas.create_polygon(
+            x1 + length * 0.2,
+            y1,
+            x1 + length * 0.3,
+            y1 - height * 0.5,  # Window top
+            x1 + length * 0.7,
+            y1 - height * 0.5,  # Window top
+            x1 + length * 0.8,
+            y1,
+            fill=window_color,
+            outline="black",
+        )
+
+        # Wheels (round and attached to the body)
+        wheel_radius = height * 0.2
+        wheel_color = "#333333"
+
+        # Front wheel
+        self.canvas.create_oval(
+            x1 + length * 0.2 - wheel_radius,
+            y2 - wheel_radius,  # Positioned relative to the raised body
+            x1 + length * 0.2 + wheel_radius,
+            y2 + wheel_radius,
+            fill=wheel_color,
+            outline="black",
+        )
+
+        # Rear wheel
+        self.canvas.create_oval(
+            x2 - length * 0.2 - wheel_radius,
+            y2 - wheel_radius,  # Positioned relative to the raised body
+            x2 - length * 0.2 + wheel_radius,
+            y2 + wheel_radius,
+            fill=wheel_color,
+            outline="black",
+        )
+
+        # Headlights
+        self.canvas.create_rectangle(
+            x1,
+            y1 + height * 0.2,
+            x1 + 10,
+            y1 + height * 0.3,
+            fill="yellow",
+            outline="black",
+        )
+
+        # Taillights
+        self.canvas.create_rectangle(
+            x2 - 10,
+            y1 + height * 0.2,
+            x2,
+            y1 + height * 0.3,
             fill="red",
             outline="black",
         )
